@@ -20,7 +20,7 @@ graph TD
     D --> D4[Library: Koha OPAC Real-time Scraper]
 ```
 
-1. **Frontend (Vercel):** A premium, minimalist black-and-white chat dashboard styled with Tailwind-like modern CSS, offering welcome suggestions, profile context persistence, and collapsable backend trace logs.
+1. **Frontend (Vercel):** A premium, minimalist blue-and-white chat dashboard styled with modern CSS, offering role-based login selection (Student vs Admin), profile context persistence, and collapsable backend trace logs.
 2. **API Gateway (Render / Railway):** A FastAPI server that registers Python callables dynamically from all 4 MCP sub-servers. It wraps tools in a trace logger to capture backend steps and forwards requests to Gemini/Gemma securely.
 3. **MCP Services (Intranet & Database):** Specialized micro-applications that query databases or scrape live portals to get real-time info.
 
@@ -57,8 +57,17 @@ Unified-Campus-Intelligence-Dashboard-with-AI-Assistant/
         ├── main.jsx       # App entry point
         ├── App.jsx        # Premium minimalist chat UI & context editor
         ├── App.css
-        └── index.css      # Core theme variables (Black & White stylesheet)
+        └── index.css      # Core theme variables (Blue & White stylesheet)
 ```
+
+---
+
+## 🔐 Role-Based Access Control (RBAC)
+
+The application supports two user profiles selectable at login:
+* **🎓 Student Profile (Read-Only):** Can query calendar deadlines, check cafeteria menus, search library books, and list events. If a student attempts to request a write action (such as changing menus or posting events), the gateway blocks the request and returns a `Permission Denied` warning message.
+* **🛡️ Admin Profile (Read & Write):** Full administration privileges. Can execute database modifications, add events, and update cafeteria menus.
+
 
 ---
 

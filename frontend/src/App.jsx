@@ -45,6 +45,7 @@ export default function CampusDashboard() {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [userRole, setUserRole] = useState(null); // 'student' or 'admin'
   
   // Student context profile to persist context (e.g. UG, B.Tech, MBA)
   const [studentProfile, setStudentProfile] = useState({
@@ -89,7 +90,8 @@ export default function CampusDashboard() {
         },
         body: JSON.stringify({ 
           prompt: activeQuery,
-          history: historyPayload
+          history: historyPayload,
+          role: userRole
         }),
       });
 
@@ -178,24 +180,72 @@ export default function CampusDashboard() {
     { label: "📚 Search: Linear Algebra books", query: "search library for 'linear algebra'" }
   ];
 
+  if (!userRole) {
+    return (
+      <div style={{ display: 'flex', height: '100vh', backgroundColor: 'var(--bg-app)', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-main)' }}>
+        <div style={{ width: '100%', maxWidth: '600px', padding: '40px', boxSizing: 'border-box', backgroundColor: 'var(--bg-card)', borderRadius: '24px', border: '1px solid var(--border-color)', boxShadow: 'var(--shadow-lg)', textAlign: 'center' }}>
+          <div style={{ width: '64px', height: '64px', borderRadius: '16px', backgroundColor: 'var(--primary)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold', fontSize: '32px', marginBottom: '24px' }}>I</div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: '700', fontSize: '32px', color: 'var(--text-heading)', margin: '0 0 8px' }}>IITR Campus AI Gateway</h1>
+          <p style={{ fontSize: '15px', color: 'var(--text-muted)', marginBottom: '36px' }}>Select your login profile to access campus services</p>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
+            <div 
+              onClick={() => setUserRole('student')}
+              style={{ padding: '24px', borderRadius: '16px', border: '1px solid var(--border-color)', backgroundColor: 'var(--bg-card)', cursor: 'pointer', textAlign: 'center', transition: 'all 0.2s' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--primary)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--border-color)';
+                e.currentTarget.style.transform = 'none';
+              }}
+            >
+              <div style={{ fontSize: '36px', marginBottom: '12px' }}>🎓</div>
+              <div style={{ fontSize: '16px', fontWeight: '600', color: 'var(--text-heading)', marginBottom: '6px' }}>Student Portal</div>
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Query deadlines, calendar milestones, check cafeteria menus, and search books.</div>
+            </div>
+            
+            <div 
+              onClick={() => setUserRole('admin')}
+              style={{ padding: '24px', borderRadius: '16px', border: '1px solid var(--border-color)', backgroundColor: 'var(--bg-card)', cursor: 'pointer', textAlign: 'center', transition: 'all 0.2s' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = 'var(--primary)';
+                e.currentTarget.style.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = 'var(--border-color)';
+                e.currentTarget.style.transform = 'none';
+              }}
+            >
+              <div style={{ fontSize: '36px', marginBottom: '12px' }}>🛡️</div>
+              <div style={{ fontSize: '16px', fontWeight: '600', color: 'var(--text-heading)', marginBottom: '6px' }}>Admin Console</div>
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Full admin access. Modify cafeteria menus, submit campus events, and manage catalog data.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{ display: 'flex', height: '100vh', backgroundColor: 'var(--bg-app)', color: 'var(--text-main)', fontFamily: 'var(--font-main)' }}>
       {/* Sidebar - Desktop */}
       <div style={{ width: '280px', display: 'flex', flexDirection: 'column', borderRight: '1px solid var(--border-color)', backgroundColor: 'var(--bg-sidebar)', padding: '24px 20px', boxSizing: 'border-box' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '32px' }}>
-          <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: 'linear-gradient(135deg, var(--primary), var(--accent))', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold', fontSize: '18px' }}>I</div>
+          <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold', fontSize: '18px' }}>I</div>
           <span style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text-heading)', fontFamily: 'var(--font-display)', letterSpacing: '0.5px' }}>IITR CAMPUS AI</span>
         </div>
 
         <button 
           onClick={() => setMessages([])} 
-          style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '1px solid var(--border-color)', background: 'var(--bg-app)', color: 'var(--text-heading)', fontSize: '14px', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', transition: 'all 0.2s', marginBottom: '24px' }}
+          style={{ width: '100%', padding: '12px', borderRadius: '10px', border: '1px solid var(--border-color)', background: 'var(--bg-card)', color: 'var(--text-heading)', fontSize: '14px', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', transition: 'all 0.2s', marginBottom: '24px' }}
         >
           <span>💬</span> New Conversation
         </button>
 
         {/* Profile Card Context */}
-        <div style={{ marginTop: 'auto', padding: '16px', borderRadius: '12px', border: '1px solid var(--border-color)', background: 'var(--bg-app)' }}>
+        <div style={{ marginTop: 'auto', padding: '16px', borderRadius: '12px', border: '1px solid var(--border-color)', background: 'var(--bg-card)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
             <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)' }}>STUDENT CONTEXT</span>
             <button 
@@ -225,10 +275,33 @@ export default function CampusDashboard() {
       {/* Main Chat Hub Container */}
       <div style={{ flexGrow: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
         {/* Top Status Header */}
-        <header style={{ height: '64px', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', padding: '0 24px', justifyContent: 'space-between' }}>
+        <header style={{ height: '64px', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', padding: '0 24px', justifyContent: 'space-between', backgroundColor: 'var(--bg-card)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10b981', boxShadow: '0 0 8px #10b981' }}></div>
             <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-muted)' }}>IITR Gateway Server: Connected</span>
+          </div>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span style={{ fontSize: '13px', fontWeight: '600', padding: '6px 12px', borderRadius: '20px', border: '1px solid var(--border-color)', backgroundColor: 'var(--bg-sidebar)', color: 'var(--text-heading)', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              {userRole === 'admin' ? '🛡️ Admin Profile' : '🎓 Student Profile'}
+            </span>
+            <button 
+              onClick={() => {
+                setUserRole(null);
+                setMessages([]);
+              }}
+              style={{ padding: '6px 12px', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'transparent', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '13px', fontWeight: '600', transition: 'all 0.2s' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = 'var(--primary)';
+                e.currentTarget.style.borderColor = 'var(--primary)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'var(--text-muted)';
+                e.currentTarget.style.borderColor = 'var(--border-color)';
+              }}
+            >
+              Switch Profile
+            </button>
           </div>
         </header>
 
@@ -290,7 +363,7 @@ export default function CampusDashboard() {
                         padding: '16px 20px',
                         borderRadius: msg.role === 'user' ? '18px 18px 2px 18px' : '18px 18px 18px 2px',
                         backgroundColor: msg.role === 'user' ? 'var(--primary)' : 'var(--bg-card)',
-                        color: msg.role === 'user' ? '#000000' : 'var(--text-main)',
+                        color: msg.role === 'user' ? 'white' : 'var(--text-main)',
                         border: msg.role === 'user' ? 'none' : '1px solid var(--border-color)',
                         fontSize: '15px',
                         lineHeight: '1.6',

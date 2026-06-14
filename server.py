@@ -35,10 +35,21 @@ from functools import wraps
 
 # ContextVar to track request-local execution steps across threads/coroutines
 request_steps = contextvars.ContextVar("request_steps", default=None)
+user_role = contextvars.ContextVar("user_role", default="student")
 
 def traced_tool_wrapper(fn):
     @wraps(fn)
     def wrapper(*args, **kwargs):
+        role = user_role.get()
+        write_tools = ["update_cafeteria_menu", "add_campus_event"]
+        
+        # Intercept and block write operations for non-admins
+        if fn.__name__ in write_tools and role != "admin":
+            steps = request_steps.get()
+            if steps is not None:
+                steps.append(f"⚠️ [Blocked] Tool '{fn.__name__}' execution rejected (Permission Denied for Student).")
+            return f"Error: Permission Denied. Only users logged in with the 'admin' profile are authorized to modify cafeteria menus or add campus events."
+            
         steps = request_steps.get()
         if steps is not None:
             steps.append(f"⚡ [Tool Call] Invoking tool '{fn.__name__}'")
@@ -89,15 +100,17 @@ class Message(BaseModel):
 class ChatPayload(BaseModel):
     prompt: str
     history: list[Message] = []
+    role: str = "student"
 
 @app.post("/api/chat")
 async def ask_integrated_campus_ai(payload: ChatPayload):
     if not payload.prompt.strip():
         raise HTTPException(status_code=400, detail="Query cannot be empty.")
         
-    # Initialize request-local execution trace
+    # Initialize request-local context variables
     steps = ["🧠 Analyzing query patterns..."]
     request_steps.set(steps)
+    user_role.set(payload.role.strip().lower())
     
     try:
         # Build contents from history and current prompt
