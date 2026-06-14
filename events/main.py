@@ -14,7 +14,10 @@ load_dotenv()
 
 # Initialize FastMCP server
 mcp = FastMCP("events")
-uri = os.getenv("MONGODB_URI", "mongodb+srv://homesh456babu:MHB456@cluster0.eqnzvri.mongodb.net/?appName=Cluster0")
+uri = os.getenv("MONGODB_URI")
+if not uri:
+    raise RuntimeError("MONGODB_URI environment variable is missing. Please set it in your .env file or server configuration.")
+
 # Constants
 # 2. Mock Database
 client = MongoClient(uri, server_api=ServerApi('1'), connect=False, tlsCAFile=certifi.where())
