@@ -186,7 +186,11 @@ async def ask_integrated_campus_ai(payload: ChatPayload):
     except Exception as e:
         steps.append(f"❌ [CRASH] Encountered error: {str(e)}")
         print(f"[ERROR] Gateway Pipeline Error: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Internal Server Exception: {str(e)}")
+        return {
+            "status": "success",
+            "reply": "⚠️ I'm sorry, but I am currently unable to fetch the details for your query due to a temporary connection or API limit issue. Please try again in a few moments.",
+            "steps": steps
+        }
 
 if __name__ == "__main__":
     import uvicorn
