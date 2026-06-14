@@ -238,7 +238,7 @@ export default function CampusDashboard() {
             {messages.length === 0 ? (
               // Empty/Welcome Landing state
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginTop: '40px' }} className="animate-slide-up">
-                <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: '700', fontSize: '40px', color: 'var(--text-heading)', margin: '0 0 12px', background: 'linear-gradient(135deg, var(--primary), var(--accent))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: '700', fontSize: '40px', color: 'var(--text-heading)', margin: '0 0 12px' }}>
                   Hello, student!
                 </h1>
                 <p style={{ fontSize: '18px', color: 'var(--text-muted)', marginBottom: '32px', maxWidth: '600px' }}>
@@ -290,7 +290,7 @@ export default function CampusDashboard() {
                         padding: '16px 20px',
                         borderRadius: msg.role === 'user' ? '18px 18px 2px 18px' : '18px 18px 18px 2px',
                         backgroundColor: msg.role === 'user' ? 'var(--primary)' : 'var(--bg-card)',
-                        color: msg.role === 'user' ? 'white' : 'var(--text-main)',
+                        color: msg.role === 'user' ? '#000000' : 'var(--text-main)',
                         border: msg.role === 'user' ? 'none' : '1px solid var(--border-color)',
                         fontSize: '15px',
                         lineHeight: '1.6',
