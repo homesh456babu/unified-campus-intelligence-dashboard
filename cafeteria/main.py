@@ -6,9 +6,14 @@ import certifi
 import httpx
 from mcp.server.fastmcp import FastMCP
 
+from dotenv import load_dotenv
+
+# Load env variables from .env if present
+load_dotenv()
+
 # Initialize FastMCP server
 mcp = FastMCP("cafeteria")
-uri = "mongodb+srv://homesh456babu:MHB456@cluster0.eqnzvri.mongodb.net/?appName=Cluster0"
+uri = os.getenv("MONGODB_URI", "mongodb+srv://homesh456babu:MHB456@cluster0.eqnzvri.mongodb.net/?appName=Cluster0")
 # Constants
 # 2. Mock Database
 client = MongoClient(uri, server_api=ServerApi('1'), connect=False, tlsCAFile=certifi.where())
