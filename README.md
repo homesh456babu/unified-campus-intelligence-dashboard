@@ -94,3 +94,64 @@ The application supports two user profiles selectable at login:
 ### Frontend Web Stack
 * **`react` / `react-dom`**: Frontend library.
 * **`vite`**: Modern build compiler offering hot-reloads and optimized output builds.
+
+---
+
+## 🌟 Key Features
+
+1. **Intelligent Role Selection & Login Simulation**: Choose between a *Student Profile* and *Admin Console* to test various access scenarios.
+2. **Context-Aware Campus Agent**: Persists student context (Program, Major Department, and Academic Cycle Year) and appends this context behind the scenes to yield personalized query results.
+3. **Live Academic Calendar Scraper**: Downloads IIT Roorkee's official physical academic PDF schedules and parses table rows in real-time, matching queries with dates/events dynamically.
+4. **Interactive Cafeteria & Events Dashboard**: Live menu schedules and upcoming campus event listings backed by MongoDB Atlas. Includes admin privilege checks blocking modification attempts from students.
+5. **Real-time Koha OPAC Library Scraper**: Directly queries the Mahatma Gandhi Central Library catalog RSS feeds and tabular records to assess book availability.
+6. **Backend Execution Step Trace**: Toggleable step-by-step logs representing Model Context Protocol (MCP) server calls and routing flows.
+7. **Mobile-Responsive Side Drawer Interface**: Clean, premium responsive web layout optimizing suggestion grids, roles, and profile modals for smartphone views.
+
+---
+
+## ⚡ Setup & Launch Instructions
+
+### Prerequisites
+* **Python 3.10+** (Recommend using `uv` or `pip`)
+* **Node.js 18+**
+
+### Backend Setup
+1. From the repository root, install the Python package dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. Create a `.env` file in the root folder with the following configuration:
+   ```env
+   GEMINI_API_KEY=your_gemini_api_key
+   MONGODB_URI=your_mongodb_connection_uri
+   ```
+3. Boot up the unified FastAPI backend server:
+   ```bash
+   python server.py
+   ```
+   *The server runs locally at `http://localhost:8000`.*
+
+### Frontend Setup
+1. Navigate into the frontend folder:
+   ```bash
+   cd frontend
+   ```
+2. Install the frontend dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the Vite React development server:
+   ```bash
+   npm run dev
+   ```
+   *The web application runs locally at `http://localhost:5173`.*
+
+---
+
+## 🚀 Deployed Demo Link
+
+The frontend web application is deployed on Vercel:
+
+* **Production URL:** [https://unified-campus-intelligence-dashboard.vercel.app](https://unified-campus-intelligence-dashboard.vercel.app)
+* **API Endpoint (Railway/Render):** Connects securely to the hosted FastAPI gateway server.
+
