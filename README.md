@@ -153,5 +153,5 @@ The application supports two user profiles selectable at login:
 The frontend web application is deployed on Vercel:
 
 * **Production URL:** [https://unified-campus-intelligence-dashboa-pi.vercel.app](https://unified-campus-intelligence-dashboa-pi.vercel.app)
-* **API Endpoint (Railway/Render):** Connects securely to the hosted FastAPI gateway server.
+* **API Endpoint (Render):** Connects securely to the hosted FastAPI gateway server.
 
